@@ -17,7 +17,7 @@ bluecolor = (50, 153, 213)
 dis_wid = 600
 dis_hei = 400
 dis = pygame.display.set_mode((dis_wid, dis_hei))
-pygame.display.set_caption('Snake Game') # fix the caption
+pygame.display.set_caption('Snake Game by @rameon') # fix the caption
 
 # Set quit button, snake block
 snake_block = 10
