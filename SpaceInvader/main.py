@@ -2,6 +2,7 @@ import pygame
 from PIL import Image
 import random
 
+
 # Change the size of image(player.png)
 image = Image.open('space-invaders.png')
 player = image.resize((50, 50))
@@ -36,6 +37,7 @@ background = pygame.image.load('galaxy.png')
 pygame.display.set_caption("Space Invader by @rameon")
 icon = pygame.image.load('spaceship.png')
 pygame.display.set_icon(icon)
+
 
 # Player
 playerImg = pygame.image.load('player.png')
