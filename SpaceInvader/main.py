@@ -2,7 +2,6 @@ import pygame
 from PIL import Image
 import random
 
-
 # Change the size of image(player.png)
 image = Image.open('space-invaders.png')
 player = image.resize((50, 50))
@@ -68,6 +67,7 @@ def enemy(x, y):  # Define Function enemy()
     screen.blit(enemyImg, (x, y))  # 처음 enemy icon이 나타나는 위치를 지정함
 
 
+    
 # Game Loop
 running = True
 while running:
