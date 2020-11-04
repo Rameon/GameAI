@@ -37,7 +37,6 @@ pygame.display.set_caption("Space Invader by @rameon")
 icon = pygame.image.load('spaceship.png')
 pygame.display.set_icon(icon)
 
-
 # Player
 playerImg = pygame.image.load('player.png')
 playerX = 370
@@ -52,11 +51,15 @@ enemyX_change = 0.3
 enemyY_change = 30
 
 # Bullet
+# Ready - You can't see the bullet on the screen
+# Fire - The bullet is currently moving
+
 bulletImg = pygame.image.load('bul.png')
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 30
+bulletY_change = 3
+bullet_state = "ready"
 
 
 def player(x, y):  # Define Function player()
@@ -67,7 +70,12 @@ def enemy(x, y):  # Define Function enemy()
     screen.blit(enemyImg, (x, y))  # 처음 enemy icon이 나타나는 위치를 지정함
 
 
-    
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bulletImg, (x + 16, y + 10))
+
+
 # Game Loop
 running = True
 while running:
@@ -87,6 +95,8 @@ while running:
                 playerX_change = -1
             if event.key == pygame.K_RIGHT:
                 playerX_change = 1
+            if event.key == pygame.K_SPACE:
+                fire_bullet(playerX, bulletY)
         if event.type == pygame.KEYUP:  # 키보드가 안눌렸을때
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
@@ -107,6 +117,11 @@ while running:
     elif enemyX > 736.0:  # 800 - 64bit =736
         enemyX_change = -0.1
         enemyY += enemyY_change
+
+    # Bullet Movement
+    if bullet_state is "fire":
+        fire_bullet(playerX, bulletY)
+        bulletY -= bulletY_change
 
     player(playerX, playerY)  # 위에서 define한 player() function을 무한 Game Loop 내에 포함시켜서 항상 player가 Screen에 나타나도록 함
     enemy(enemyX, enemyY)
