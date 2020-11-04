@@ -1,1 +1,3 @@
 # GameAI
+## AI
+Artificial Intelligence
