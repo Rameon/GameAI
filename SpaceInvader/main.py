@@ -126,3 +126,6 @@ while running:
     player(playerX, playerY)  # 위에서 define한 player() function을 무한 Game Loop 내에 포함시켜서 항상 player가 Screen에 나타나도록 함
     enemy(enemyX, enemyY)
     pygame.display.update()
+
+    
+    
