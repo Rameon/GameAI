@@ -1,4 +1,5 @@
 import pygame
+import math
 from PIL import Image
 import random
 
@@ -22,7 +23,6 @@ image4 = Image.open('bullet.png')
 bul = image4.resize((30, 30))
 bul.save('bul.png')
 
-
 # Initialize the pygame
 pygame.init()
 
@@ -45,7 +45,7 @@ playerX_change = 0
 
 # Enemy
 enemyImg = pygame.image.load('enemy.png')
-enemyX = random.randint(0, 800)
+enemyX = random.randint(0, 735)
 enemyY = random.randint(30, 150)
 enemyX_change = 0.3
 enemyY_change = 30
@@ -60,6 +60,8 @@ bulletY = 480
 bulletX_change = 0
 bulletY_change = 3
 bullet_state = "ready"
+
+score = 0
 
 
 def player(x, y):  # Define Function player()
@@ -76,6 +78,14 @@ def fire_bullet(x, y):
     screen.blit(bulletImg, (x + 16, y + 10))
 
 
+def isCollision(enemyX, enemyY, bulletX, bulletY):
+    distance = math.sqrt(math.pow(enemyX-bulletX, 2) + math.pow(enemyY-bulletY, 2))
+    if distance < 27:
+        return True
+    else:
+        return False
+
+
 # Game Loop
 running = True
 while running:
@@ -83,7 +93,7 @@ while running:
     screen.fill((0, 0, 0))
 
     # Background Image
-    screen.blit(background, (0,0))
+    screen.blit(background, (0, 0))
 
     for event in pygame.event.get():  # event : 게임 내에서 일어나는 모든 일들(모든 input control)
         if event.type == pygame.QUIT:  # If exit button is pressed, then exit.
@@ -96,7 +106,10 @@ while running:
             if event.key == pygame.K_RIGHT:
                 playerX_change = 1
             if event.key == pygame.K_SPACE:
-                fire_bullet(playerX, bulletY)
+                if bullet_state is "ready":
+                    # Get the current x coordinate of the spaceship
+                    bulletX = playerX
+                    fire_bullet(playerX, bulletY)
         if event.type == pygame.KEYUP:  # 키보드가 안눌렸을때
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
@@ -119,13 +132,23 @@ while running:
         enemyY += enemyY_change
 
     # Bullet Movement
+    if bulletY <= 0:
+        bulletY = 480
+        bullet_state = "ready"
     if bullet_state is "fire":
         fire_bullet(playerX, bulletY)
         bulletY -= bulletY_change
 
+    # Collision
+    collision = isCollision(enemyX, enemyY, bulletX, bulletY)
+    if collision:
+        bulletY = 480
+        bullet_state = "ready"
+        score += 1
+        print(score)
+        enemyX = random.randint(0, 735)
+        enemyY = random.randint(50, 150)
+
     player(playerX, playerY)  # 위에서 define한 player() function을 무한 Game Loop 내에 포함시켜서 항상 player가 Screen에 나타나도록 함
     enemy(enemyX, enemyY)
     pygame.display.update()
-
-    
-    
